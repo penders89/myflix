@@ -14,6 +14,7 @@ group :development do
   gem 'thin'
   gem "better_errors"
   gem "binding_of_caller"
+  gem "byebug"
 end
 
 group :development, :test do
@@ -27,6 +28,7 @@ group :test do
   gem 'database_cleaner'
   gem 'shoulda-matchers'
   gem 'vcr'
+  gem 'fabrication'
 end
 
 group :production do

@@ -6,7 +6,7 @@ Category.create(name: "romance")
   Video.create(category_id: (1..3).to_a.sample, 
     title: Faker::Lorem.words(4).join(' '), 
     small_cover: "https://dummyimage.com/166x236/#{"%06x" % (rand * 0xffffff)}/#{"%06x" % (rand * 0xffffff)}.jpg",
-    large_cover: "tmp/monk_large.jpg", description: Faker::Lorem.paragraph)
+    large_cover: "https://dummyimage.com/665x375/000/fff.jpg", description: Faker::Lorem.paragraph)
 end
 
 # 100.times do 
