@@ -33,5 +33,22 @@ describe VideosController do
     end
     context "without authenticated user"
   end
+  
+  describe "GET search" do 
+    context "with authenticated user" do 
+      let(:video1) { Fabricate(:video, title: "Title1") }
+      let(:video2) { Fabricate(:video, title: "Title2") }
+
+      before do 
+        get :search, search_string: "itl"
+      end
+      
+      it "should set @videos variable" do 
+        expect(assigns(:videos)).to eq([video1, video2])
+      end
+      
+    end
+    context "without authenticated user"
+  end
 
 end
