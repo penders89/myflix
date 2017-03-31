@@ -9,16 +9,16 @@ Category.create(name: "romance")
     large_cover: "https://dummyimage.com/665x375/000/fff.jpg", description: Faker::Lorem.paragraph)
 end
 
-# 100.times do 
-#   User.create(full_name: Faker::Name.name, password: "password", email: Faker::Internet.email)
-# end
+100.times do 
+  User.create(username: Faker::Name.name, password: "password", email: Faker::Internet.email)
+end
 
-# User.first(20).each do |user| 
-#   Video.last(20).each do |video|
-#     if rand < 0.5 
-#       Review.create(content: Faker::Lorem.paragraph(2), rating: (1..5).to_a.sample, user: user, video: video)
-#     end
-#   end
-# end
+User.first(20).each do |user| 
+  Video.last(20).each do |video|
+    if rand < 0.5 
+      Review.create(content: Faker::Lorem.paragraph(2), rating: (1..5).to_a.sample, user: user, video: video)
+    end
+  end
+end
 
 

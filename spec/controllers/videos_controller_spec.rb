@@ -29,6 +29,8 @@ describe VideosController do
   describe "GET show" do 
     context "with authenticated user" do 
       let(:video) { Fabricate(:video) }
+      let(:review1) { Fabricate(:review, video: video, created_at: 2.days.ago) }
+      let(:review2) { Fabricate(:review, video: video, created_at: 1.days.ago) }
       let(:user) { Fabricate(:user) }
 
       before do 
@@ -38,6 +40,10 @@ describe VideosController do
       
       it "should set @video variable" do 
         expect(assigns(:video)).to eq(video)
+      end
+      
+      it "should set @reviews variable in reverse chronological order" do 
+        expect(assigns(:reviews)).to eq([review2, review1])
       end
       
     end
