@@ -5,6 +5,8 @@ class VideosController < ApplicationController
   
   def show
     @video = Video.find(params[:id])
+    @review = Review.new
+    @reviews = @video.reviews.order('created_at DESC')
   end
   
   def search
