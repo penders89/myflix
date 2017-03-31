@@ -15,6 +15,12 @@ Myflix::Application.routes.draw do
   
   resources :categories, only: [:show], param: :name
   
+  get '/my_queue', to: 'queue_items#index'
+  post 'my_queue', to: 'queue_items#create'
+  delete 'my_queue', to: 'queue_items#destroy'
+  
+  
+  
   get 'register', to: 'users#new'
   resources :users, only: [:create]
   

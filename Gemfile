@@ -16,7 +16,6 @@ group :development do
   gem 'thin'
   gem "better_errors"
   gem "binding_of_caller"
-  gem "byebug"
 end
 
 group :development, :test do
@@ -24,6 +23,7 @@ group :development, :test do
   gem 'pry'
   gem 'pry-nav'
   gem 'rspec-rails'
+  gem "byebug"
 end
 
 group :test do
