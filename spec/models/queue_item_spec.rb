@@ -6,4 +6,5 @@ describe QueueItem do
   it { is_expected.to validate_presence_of :user }
   it { is_expected.to validate_presence_of :video }
   it { is_expected.to validate_presence_of :ranking }
+  it { is_expected.to validate_numericality_of(:ranking).only_integer }
 end
