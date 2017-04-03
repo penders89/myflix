@@ -6,4 +6,5 @@ class QueueItem < ActiveRecord::Base
   validates_presence_of :video
   validates_presence_of :ranking
   
+  validates_numericality_of :ranking, { only_integer: true }
 end
