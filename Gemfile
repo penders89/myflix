@@ -31,6 +31,8 @@ group :test do
   gem 'shoulda'
   gem 'vcr'
   gem 'fabrication'
+  gem 'capybara'
+  gem 'launchy'
 end
 
 group :production do
