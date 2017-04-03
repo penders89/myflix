@@ -17,7 +17,7 @@ class QueueItemsController < ApplicationController
   def destroy 
     queue_item = QueueItem.find(params[:id])
     queue_item.destroy if current_user.queue_items.include?(queue_item)
-    normalise_queue_item_rankings
+    current_user.normalise_queue_item_rankings
     
     flash[:success] = "Queue item has been removed."
     redirect_to my_queue_path
@@ -53,7 +53,7 @@ class QueueItemsController < ApplicationController
       ActiveRecord::Base.transaction do 
         params[:queue_items].each do |queue_item_data|
           queue_item = QueueItem.find(queue_item_data["id"])
-          queue_item.update_attributes!(ranking: queue_item_data["ranking"]) if 
+          queue_item.update_attributes!(ranking: queue_item_data["ranking"], rating: queue_item_data["rating"]) if 
             queue_item.user == current_user
         end
       end
