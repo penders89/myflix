@@ -1,15 +1,12 @@
 require 'spec_helper'
 
 describe ReviewsController do 
+  before { set_current_user }
+  
   describe "POST create" do 
-    let(:user) { Fabricate(:user) } 
     let(:video) { Fabricate(:video) }
 
     context "with authenticated user" do 
-      before do 
-        session[:user_id] = user.id
-      end
-
       context "when review doesn't already exist" do 
         context "with valid input" do 
           before do 
@@ -26,7 +23,7 @@ describe ReviewsController do
           end
           
           it "should associate the review with current user" do 
-            expect(Review.first.user).to eq(user)
+            expect(Review.first.user).to eq(current_user)
           end
           
           it "should show a message in the flash" do 
@@ -40,7 +37,6 @@ describe ReviewsController do
         
         context "with invalid input" do 
           before do 
-            session[:user_id] = user.id
             post :create, video_id: video.id, review: {content: "some content"}
           end
           
@@ -64,7 +60,7 @@ describe ReviewsController do
       
       context "with existing review" do 
         before do 
-          Fabricate(:review, user: user, video: video) 
+          Fabricate(:review, user: current_user, video: video) 
           post :create, video_id: video.id, review: {rating: 3, 
             content: "some content" }
         end
@@ -84,10 +80,9 @@ describe ReviewsController do
     end
     
     context "without authenticated user" do 
-      it "should redirect to root path" do 
-        post :create, video_id: video.id, review: {rating: 3, 
-          content: "some content" }
-        expect(response).to redirect_to root_path
+      it_behaves_like "require_sign_in" do 
+        let(:action) { post :create, video_id: video.id, review: {rating: 3, 
+          content: "some content" } }
       end
     end
   end

@@ -1,14 +1,14 @@
 require 'spec_helper' 
 
 describe VideosController do 
+  before { set_current_user } 
+  
   describe "GET index" do 
     context "with authenticated user" do 
       let(:cat1) { Fabricate(:category) }
       let(:cat2) { Fabricate(:category) }
-      let(:user) { Fabricate(:user) }
-      
+
       before do 
-        session[:user_id] = user.id
         get :index
       end
       
@@ -19,9 +19,8 @@ describe VideosController do
     end
     
     context "without authenticated user" do
-      it "should redirect to root path" do 
-        get :index
-        expect(response).to redirect_to root_path
+      it_behaves_like "require_sign_in" do 
+        let(:action) { get :index }
       end
     end
   end
@@ -31,10 +30,8 @@ describe VideosController do
       let(:video) { Fabricate(:video) }
       let(:review1) { Fabricate(:review, video: video, created_at: 2.days.ago) }
       let(:review2) { Fabricate(:review, video: video, created_at: 1.days.ago) }
-      let(:user) { Fabricate(:user) }
 
       before do 
-        session[:user_id] = user.id
         get :show, id: video.id
       end
       
@@ -48,10 +45,8 @@ describe VideosController do
       
     end
     context "without authenticated user" do 
-      it "should redirect to root path" do 
-        video = Fabricate(:video)
-        get :show, id: video.id
-        expect(response).to redirect_to root_path
+      it_behaves_like "require_sign_in" do 
+        let(:action) { get :show, id: 1 }
       end
     end
   end
@@ -60,10 +55,8 @@ describe VideosController do
     context "with authenticated user" do 
       let(:video1) { Fabricate(:video, title: "Title1") }
       let(:video2) { Fabricate(:video, title: "Title2") }
-      let(:user) { Fabricate(:user) }
 
       before do 
-        session[:user_id] = user.id
         get :search, search_string: "itl"
       end
       
@@ -73,9 +66,8 @@ describe VideosController do
       
     end
     context "without authenticated user" do 
-      it "should redirect to root path" do 
-        get :search, search_string: "string" 
-        expect(response).to redirect_to root_path
+      it_behaves_like "require_sign_in" do 
+        let(:action) { get :search, search_string: "string" } 
       end
     end
   end
