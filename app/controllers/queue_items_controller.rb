@@ -26,7 +26,7 @@ class QueueItemsController < ApplicationController
   def update_queue
     begin 
       update_queue_items
-      normalise_queue_item_rankings
+      current_user.normalise_queue_item_rankings
     rescue ActiveRecord::RecordInvalid
       flash[:danger] = "Invalid position numbers."
     end
@@ -59,9 +59,5 @@ class QueueItemsController < ApplicationController
       end
     end
     
-    def normalise_queue_item_rankings
-      current_user.queue_items.each_with_index do | queue_item, index|
-        queue_item.update_attributes(ranking: index + 1)
-      end
-    end
+    
 end
