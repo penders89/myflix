@@ -45,7 +45,7 @@ describe QueueItem do
     end
     
     it "creates a review with the rating if review is not present" do 
-      user = Fabricate(:user)
+        user = Fabricate(:user)
       video = Fabricate(:video)
       queue_item = Fabricate(:queue_item, user: user, video: video)
       queue_item.rating = 3

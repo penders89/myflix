@@ -1,12 +1,13 @@
 require 'spec_helper' 
 
 describe CategoriesController do 
+  before { set_current_user }
+  
   context "with authenticated user" do 
     let(:category) { Fabricate(:category) }
     let(:user) { Fabricate(:user) }
     
     before do 
-      session[:user_id] = user.id
       get :show, name: category.name
     end
     
@@ -17,10 +18,8 @@ describe CategoriesController do
   end
   
   context "without authenticated user" do 
-    it "should redirect to root path" do 
-      category = Fabricate(:category)
-      get :show, name: category.name
-      expect(response).to redirect_to root_path
+    it_behaves_like "require_sign_in" do 
+      let(:action) { get :show, name: "anything" }
     end
   end
 end

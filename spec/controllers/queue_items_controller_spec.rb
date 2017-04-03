@@ -1,16 +1,16 @@
 require 'spec_helper'
 
 describe QueueItemsController do 
+  before { set_current_user }  
+
   describe "GET index" do 
     context "with authenticated user" do 
-      let(:user) { Fabricate(:user) } 
       let(:video1) { Fabricate(:video) } 
       let(:video2) { Fabricate(:video) } 
-      let(:queue_item1) { Fabricate(:queue_item, user: user, video: video1, ranking: 2) }
-      let(:queue_item2) { Fabricate(:queue_item, user: user, video: video2, ranking: 1) }
+      let(:queue_item1) { Fabricate(:queue_item, user: current_user, video: video1, ranking: 2) }
+      let(:queue_item2) { Fabricate(:queue_item, user: current_user, video: video2, ranking: 1) }
       
       before do 
-        session[:user_id] = user.id
         get :index
       end
       
@@ -20,23 +20,20 @@ describe QueueItemsController do
     end  
     
     context "without authenticated user" do 
-      it "should redirect to root path" do 
-        get :index
-        expect(response).to redirect_to root_path
+      it_behaves_like "require_sign_in" do 
+        let(:action) { get :index }
       end
     end
   end
   
   describe "POST create" do 
-    let(:user) { Fabricate(:user) }
     let(:video1) { Fabricate(:video) }
     let(:video2) { Fabricate(:video) } 
-    let!(:queue_item) { Fabricate(:queue_item, user: user, video: video1, ranking: 1) }
+    let!(:queue_item) { Fabricate(:queue_item, user: current_user, video: video1, ranking: 1) }
     
     context "with authenticated user" do 
       context "with new video item" do 
         before do 
-          session[:user_id] = user.id
           post :create, video_id: video2.id
         end
         
@@ -49,7 +46,7 @@ describe QueueItemsController do
         end
         
         it "should associate queue item with user" do 
-          expect(QueueItem.last.user).to eq(user) 
+          expect(QueueItem.last.user).to eq(current_user) 
         end
         
         it "should give queue item ranking one higher than before" do 
@@ -59,7 +56,6 @@ describe QueueItemsController do
       
       context "with video already in list" do 
         before do 
-          session[:user_id] = user.id
           post :create, video_id: video1.id
         end
         
@@ -78,7 +74,6 @@ describe QueueItemsController do
       
       context "with video which doesn't exist" do 
         before do 
-          session[:user_id] = user.id
           post :create, video_id: "not an id"
         end
         
@@ -97,22 +92,16 @@ describe QueueItemsController do
     end
     
     context "without authenticated user" do 
-      it "should redirect to root path" do 
-        post :create, video_id: 1
-        expect(response).to redirect_to root_path
+      it_behaves_like "require_sign_in" do 
+        let(:action) { post :create, id: 1 }
       end
     end
   end
   
   describe "DELETE destroy" do 
     context "with authenticated user" do 
-      let(:user) { Fabricate(:user) }
-      let!(:queue_item) { Fabricate(:queue_item, user: user, ranking: 1) }
-      
-      before do 
-        session[:user_id] = user.id
-      end
-      
+      let!(:queue_item) { Fabricate(:queue_item, user: current_user, ranking: 1) }
+
       it "should remove the queue item" do 
         delete :destroy, id: queue_item.id
         expect(QueueItem.count).to eq(0)
@@ -129,7 +118,7 @@ describe QueueItemsController do
       end
       
       it "normalises remaining queue items" do 
-        second_queue_item = Fabricate(:queue_item, user: user, ranking: 2)
+        second_queue_item = Fabricate(:queue_item, user: current_user, ranking: 2)
         delete :destroy, id: queue_item.id 
         expect(second_queue_item.reload.ranking).to eq(1)
       end
@@ -143,22 +132,16 @@ describe QueueItemsController do
     end
     
     context "without authenticated user" do 
-      it "should redirect to root path" do 
-        delete :destroy, id: 1
-        expect(response).to redirect_to root_path
+      it_behaves_like "require_sign_in" do 
+        let(:action) { delete :destroy, id: 1 }
       end
     end
   end
   
   describe "POST update_queue" do 
     context "with authenticated user" do 
-      let(:user) { Fabricate(:user) }
-      let(:queue_item1) { Fabricate(:queue_item, user: user, ranking: 1) }
-      let(:queue_item2) { Fabricate(:queue_item, user: user, ranking: 2) }
-      
-      before do 
-        session[:user_id] = user.id
-      end
+      let(:queue_item1) { Fabricate(:queue_item, user: current_user, ranking: 1) }
+      let(:queue_item2) { Fabricate(:queue_item, user: current_user, ranking: 2) }
       
       context "with valid inputs" do 
         before do 
@@ -171,11 +154,11 @@ describe QueueItemsController do
         end
         
         it "reorders the queue items" do 
-          expect(user.queue_items).to eq([queue_item2, queue_item1])
+          expect(current_user.queue_items).to eq([queue_item2, queue_item1])
         end
         
         it "normalises the ranking numbers" do 
-          expect(user.queue_items.map(&:ranking)).to eq([1,2])
+          expect(current_user.queue_items.map(&:ranking)).to eq([1,2])
         end
       end
       
@@ -210,10 +193,8 @@ describe QueueItemsController do
     end
     
     context "with unauthenticated user" do 
-      it "redirects to root path" do 
-       queue_item = Fabricate(:queue_item)
-       post :update_queue, queue_items: [{id: queue_item.id, ranking: 5}]
-       expect(response).to redirect_to root_path
+      it_behaves_like "require_sign_in" do 
+        let(:action) { post :update_queue, queue_items: [] }
       end
     end
   end
