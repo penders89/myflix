@@ -11,6 +11,19 @@ describe UsersController do
     end
   end
   
+  describe "GET show" do 
+    it_behaves_like "require_sign_in" do 
+      let(:action) { get :show, id: 1 }
+    end
+    
+    it "sets user variable" do 
+      set_current_user
+      user = Fabricate(:user)
+      get :show, id: user.id
+      expect(assigns(:user)).to eq(user)
+    end
+  end
+  
   describe "POST create" do 
     context "with valid input" do 
       before do 
@@ -29,10 +42,19 @@ describe UsersController do
       it "should show a message in the flash" do 
         expect(flash).to be_present
       end
+      
+      it "sends out email to user" do 
+        expect(ActionMailer::Base.deliveries.last.to).to eq(["test@email.com"])
+      end
+      
+      it "sends out email containing user's name" do 
+        expect(ActionMailer::Base.deliveries.last.body).to include("Name")
+      end
     end
     
     context "with invalid input" do 
       before do 
+        ActionMailer::Base.deliveries.clear 
         post :create, user: { username: "Name", password: "invalid", 
           email: "test@email.com" }
       end
@@ -48,6 +70,11 @@ describe UsersController do
       it "should not create a user" do 
         expect(User.count).to eq(0)
       end
+      
+      it "does not send out email" do 
+        expect(ActionMailer::Base.deliveries).to be_empty
+      end
+      
     end
   end
 end
