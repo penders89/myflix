@@ -5,7 +5,7 @@
         %header
           %h1 Register
         %fieldset
-          = hidden_field_tag :token, @invitation.token
+          = hidden_field_tag :token, @invitation.token if @invitation
           .col-sm-8
             .form-group
               = f.text_field :username, control_class: 'form-control', label_class: 'control-label col-sm-2'
