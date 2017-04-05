@@ -1,0 +1,6 @@
+!!! 5
+%html(lang="en-US")
+  %body
+    %p #{@invitation.inviter.username} has a message for you!
+    %p= @invitation.message
+    %p= link_to "Sign up for an account", register_url(token: @invitation.token)

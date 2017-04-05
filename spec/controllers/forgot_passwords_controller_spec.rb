@@ -23,7 +23,7 @@ describe ForgotPasswordsController do
         post :create, email: user.email 
       end
       
-      it "should redirect toforgot password confirmation page" do 
+      it "should redirect to forgot password confirmation page" do 
         expect(response).to redirect_to forgot_password_confirmation_path
       end  
       
