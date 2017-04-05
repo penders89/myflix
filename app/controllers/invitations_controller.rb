@@ -7,7 +7,10 @@ class InvitationsController < ApplicationController
     @invitation = Invitation.new(invitation_params)
     @invitation.inviter = current_user 
     
-    if @invitation.save
+    if User.find_by(email: @invitation.friend_email)
+      flash[:danger] = "This email address is already registered."
+      redirect_to new_invitation_path
+    elsif @invitation.save
       AppMailer.send_invitation(@invitation).deliver
       flash[:success] = "Invitation sent!"
       redirect_to new_invitation_path

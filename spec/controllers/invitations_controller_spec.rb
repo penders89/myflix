@@ -74,5 +74,26 @@ describe InvitationsController do
         expect(flash.now).to be_present 
       end
     end
+    
+    context "when user already exists" do 
+      before do 
+        user = Fabricate(:user)
+        ActionMailer::Base.deliveries.clear
+        post :create, invitation: { friend_name: "Brian", 
+          friend_email: user.email, message: "Some message"}
+      end
+      it "does not send email" do 
+        expect(ActionMailer::Base.deliveries.count).to eq(0)
+      end
+      
+      it "redirects to invitation page" do 
+        expect(response).to redirect_to new_invitation_path 
+      end
+      
+      it "sets flash" do 
+        expect(flash[:danger]).to be_present 
+      end
+    end
+    
   end
 end

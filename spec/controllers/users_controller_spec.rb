@@ -2,12 +2,16 @@ require 'spec_helper'
 
 describe UsersController do 
   describe "GET new" do 
-    before do 
+
+    it "should assign the @user variable" do 
       get :new
+      expect(assigns(:user)).to be_an_instance_of(User)
     end
     
-    it "should assign the @user variable" do 
-      expect(assigns(:user)).to be_an_instance_of(User)
+    it "should set the email for the user variable if responding to an invite" do
+      invitation = Fabricate(:invitation)
+      get :new, token: invitation.token
+      expect(assigns(:user).email).to eq(invitation.friend_email)
     end
   end
   
@@ -51,6 +55,27 @@ describe UsersController do
         expect(ActionMailer::Base.deliveries.last.body).to include("Name")
       end
     end
+    
+    context "with valid input following invite" do 
+      let(:user) { Fabricate(:user) }
+      
+      before do 
+        invitation = Fabricate(:invitation, friend_email: "test@email.com", 
+        inviter: user)
+        post :create, user: { username: "Name", password: "password", 
+          email: "test@email.com"}, token: invitation.token 
+      end
+      
+      it "should set new user to follow inviter" do 
+        expect(user.following_relationships.first.leader).to eq(User.last)
+      end
+      
+      it "should set inviter to follow new user" do 
+        expect(User.last.following_relationships.first.leader).to eq(user)
+      end
+      
+    end
+    
     
     context "with invalid input" do 
       before do 
