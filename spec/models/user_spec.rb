@@ -10,9 +10,8 @@ describe User do
   it { is_expected.to have_many :reviews }
   it { is_expected.to have_many(:queue_items).order('ranking ASC') }
   
-  it "generates a random token when the user is created" do 
-    user = Fabricate(:user)
-    expect(user.token).to be_present
+  it_behaves_like "tokenable" do 
+    let(:object) { Fabricate(:user) }
   end
   
   describe "#follows?" do 

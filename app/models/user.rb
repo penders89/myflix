@@ -1,4 +1,6 @@
 class User < ActiveRecord::Base
+  include Tokenable
+  
   has_secure_password validations: false
   
   has_many :reviews
@@ -10,8 +12,7 @@ class User < ActiveRecord::Base
   validates :email, presence: true, uniqueness: true
   validates :password, presence: true, on: [:create], length: { minimum: 8 }
 
-  before_create :generate_token
- 
+
   def normalise_queue_item_rankings
     queue_items.each_with_index do | queue_item, index|
       queue_item.update_attributes(ranking: index + 1)
@@ -26,7 +27,5 @@ class User < ActiveRecord::Base
     !(self.follows?(another_user) || self == another_user)
   end
   
-  def generate_token
-    self.token = SecureRandom.urlsafe_base64
-  end
+  
 end

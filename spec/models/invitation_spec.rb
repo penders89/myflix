@@ -6,9 +6,8 @@ describe Invitation do
   it { is_expected.to validate_presence_of(:message) } 
   it { is_expected.to validate_presence_of(:inviter_id) } 
   
-  it "generates a random token when the inviation is created" do 
-    invitation = Fabricate(:invitation)
-    expect(invitation.token).to be_present
+  it_behaves_like "tokenable" do 
+    let(:object) { Fabricate(:invitation) }
   end
 
 end
