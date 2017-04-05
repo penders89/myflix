@@ -11,7 +11,7 @@ class InvitationsController < ApplicationController
       flash[:danger] = "This email address is already registered."
       redirect_to new_invitation_path
     elsif @invitation.save
-      AppMailer.send_invitation(@invitation).deliver
+      AppMailer.delay.send_invitation(@invitation)
       flash[:success] = "Invitation sent!"
       redirect_to new_invitation_path
     else 
