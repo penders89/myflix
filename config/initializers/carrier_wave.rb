@@ -7,7 +7,7 @@ CarrierWave.configure do |config|
     }
     config.fog_provider = 'fog/aws'                        # required
     config.storage = :fog
-    config.fog_directory  = 'name_of_directory'                          # required
+    config.fog_directory  = 'pendersmyflix'                          # required
   else 
     config.storage = :file
     config.enable_processing = Rails.env.development?
