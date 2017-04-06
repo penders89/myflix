@@ -21,7 +21,7 @@ class UsersController < ApplicationController
         Relationship.create(leader: invitation.inviter, follower: @user)
         Relationship.create(leader: @user, follower: invitation.inviter)
       end
-      flash[:success] = "User has been created"
+      flash[:success] = "User has been created!"
       AppMailer.delay.send_welcome_email(@user)
       redirect_to login_path
     else 
