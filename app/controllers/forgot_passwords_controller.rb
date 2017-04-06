@@ -8,7 +8,7 @@ class ForgotPasswordsController < ApplicationController
       AppMailer.delay.send_forgot_password(user)
       redirect_to forgot_password_confirmation_path
     else
-      flash[:danger] = params[:email].blank? ? "Email can't be blank." : "Email does not exist."
+      flash[:danger] = params[:email].blank? ? "Email cannot be blank." : "Email does not exist."
       redirect_to forgot_password_path
     end
   end
