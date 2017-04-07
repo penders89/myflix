@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170406121400) do
+ActiveRecord::Schema.define(version: 20170407141205) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -72,6 +72,7 @@ ActiveRecord::Schema.define(version: 20170406121400) do
     t.datetime "updated_at"
     t.string   "small_cover"
     t.string   "large_cover"
+    t.string   "video_url"
   end
 
 end
