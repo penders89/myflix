@@ -17,6 +17,7 @@
 # Ignore the database.yml file
 config/database.yml
 
-dump.rdb
 # Ignore application configuration
 /config/application.yml
+
+*.rdb
