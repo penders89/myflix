@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-ruby '2.1.2'
+ruby '2.2.6'
 
 gem 'bootstrap-sass', '3.1.1.1'
 gem 'coffee-rails'
@@ -12,12 +12,13 @@ gem 'pg'
 gem 'bcrypt'
 gem 'bootstrap_form'
 gem 'sidekiq'
-gem 'unicorn'
+# gem 'unicorn'
 gem 'carrierwave'
 gem 'mini_magick'
 gem 'fog'
 gem 'stripe'
 gem 'figaro'
+gem 'tzinfo-data'
 
 group :development do
   gem 'thin'
@@ -39,6 +40,7 @@ group :test do
   gem 'vcr'
   gem 'fabrication'
   gem 'capybara'
+  gem 'selenium-webdriver'
   gem 'launchy'
   gem 'capybara-email'
 end
@@ -46,4 +48,3 @@ end
 group :production do
   gem 'rails_12factor'
 end
-
