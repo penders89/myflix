@@ -21,12 +21,10 @@ class UsersController < ApplicationController
         Relationship.create(leader: invitation.inviter, follower: @user)
         Relationship.create(leader: @user, follower: invitation.inviter)
       end
-      byebug
       Stripe.api_key = ENV['STRIPE_SECRET_KEY']
       token = params[:stripeToken]
-      Stripe::Charge.create(
+      StripeWrapper::Charge.create(
         :amount => 999,
-        :currency => "gbp",
         :description => "Example charge",
         :source => token,
       )
