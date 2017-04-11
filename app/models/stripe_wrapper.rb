@@ -9,9 +9,9 @@ module StripeWrapper
 
     def self.create(options = {})
       begin
+        # byebug
         response = Stripe::Charge.create(
           amount: options[:amount],
-          card: options[:card],
           currency: "usd",
           description: options[:description],
           source: options[:source]

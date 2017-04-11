@@ -29,8 +29,9 @@ feature "User invitations" do
     end
 
     click_button "Register"
-byebug
-    sleep 2
+
+    sleep 4
+
     visit login_path
     fill_in "Email", with: "test@example.com"
     fill_in "Password", with: "Password"
