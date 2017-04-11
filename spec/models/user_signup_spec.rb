@@ -3,11 +3,11 @@ require "spec_helper"
 describe UserSignup do
   describe "#sign_up" do
     context "valid personal info and valid card" do
-      let(:charge) { double(:charge, successful?: true)}
+      let(:customer) { double(:customer, successful?: true)}
       let(:user) { Fabricate(:user, email: "test@example.com", username: "Test") }
 
       before do
-        expect(StripeWrapper::Customer).to receive(:create).and_return(charge)
+        expect(StripeWrapper::Customer).to receive(:create).and_return(customer)
         UserSignup.new(user).sign_up("token", nil)
       end
 
@@ -29,11 +29,11 @@ describe UserSignup do
     end
 
     context "with valid input and declined card" do
-      let(:charge) { double(:charge, successful?: false, error_message: "Error message")}
+      let(:customer) { double(:customer, successful?: false, error_message: "Error message")}
       let(:user) { User.new(Fabricate.attributes_for(:user, email: "test@example.com", username: "Test")) }
 
       before do
-        expect(StripeWrapper::Customer).to receive(:create).and_return(charge)
+        expect(StripeWrapper::Customer).to receive(:create).and_return(customer)
         UserSignup.new(user).sign_up("token", nil)
       end
 
@@ -47,12 +47,12 @@ describe UserSignup do
     end
 
     context "with valid input following invite" do
-      let(:charge) { double(:charge, successful?: true)}
+      let(:customer) { double(:customer, successful?: true)}
       let(:user) { Fabricate(:user) }
       let(:invitation) {Fabricate(:invitation, friend_email: "test@example.com", inviter: user) }
 
       before do
-        expect(StripeWrapper::Customer).to receive(:create).and_return(charge)
+        expect(StripeWrapper::Customer).to receive(:create).and_return(customer)
         new_user = User.new(Fabricate.attributes_for(:user, email: "test@example.com"))
         UserSignup.new(new_user).sign_up("token", invitation.token)
       end
@@ -67,7 +67,6 @@ describe UserSignup do
     end
 
     context "with invalid input" do
-      let(:charge) { double(:charge, successful?: true)}
       let(:user) { User.new(Fabricate.attributes_for(:user)) }
 
       before do

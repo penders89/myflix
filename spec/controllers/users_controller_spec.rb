@@ -57,7 +57,7 @@ describe UsersController do
       end
 
       it "should assign user variable" do
-        expect(assigns(:user)).to be_an_instance_of(User)
+        expect(assigns(:user)).to be_an_instance_of(User  )
       end
 
       it "renders the new template", :vcr do
