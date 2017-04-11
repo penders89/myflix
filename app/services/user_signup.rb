@@ -7,10 +7,9 @@ class UserSignup
 
   def sign_up(stripeToken, invitation_token)
     if @user.valid?
-      charge = StripeWrapper::Charge.create(
-        :amount => 999,
-        :description => "Example charge",
-        :source => stripeToken,
+      charge = StripeWrapper::Customer.create(
+        user: @user,
+        source: stripeToken
       )
 
       if charge.successful?
