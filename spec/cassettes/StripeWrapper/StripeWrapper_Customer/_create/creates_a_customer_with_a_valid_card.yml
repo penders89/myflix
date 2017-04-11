@@ -2,10 +2,10 @@
 http_interactions:
 - request:
     method: post
-    uri: https://api.stripe.com/v1/customers
+    uri: https://api.stripe.com/v1/tokens
     body:
       encoding: UTF-8
-      string: source=tok_1A7SpmJbg6qtaO0v0vPZ0mkH&email=test%40example.com&plan=basic
+      string: card[number]=4242424242424242&card[exp_month]=4&card[exp_year]=2018&card[cvc]=314
     headers:
       User-Agent:
       - Stripe/v1 RubyBindings/2.2.1
@@ -28,11 +28,11 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Tue, 11 Apr 2017 17:31:21 GMT
+      - Tue, 11 Apr 2017 17:09:24 GMT
       Content-Type:
       - application/json
       Content-Length:
-      - '3299'
+      - '780'
       Connection:
       - keep-alive
       Access-Control-Allow-Credentials:
@@ -46,7 +46,7 @@ http_interactions:
       Cache-Control:
       - no-cache, no-store
       Request-Id:
-      - req_ASNa6D1cw72xer
+      - req_ASNFIZ57B4pO6F
       Stripe-Version:
       - '2017-04-06'
       Strict-Transport-Security:
@@ -55,16 +55,105 @@ http_interactions:
       encoding: UTF-8
       string: |
         {
-          "id": "cus_ASNaCxXCQxXsVh",
+          "id": "tok_1A7SUaJbg6qtaO0vxHf9n6n7",
+          "object": "token",
+          "card": {
+            "id": "card_1A7SUaJbg6qtaO0vJAlaDVJb",
+            "object": "card",
+            "address_city": null,
+            "address_country": null,
+            "address_line1": null,
+            "address_line1_check": null,
+            "address_line2": null,
+            "address_state": null,
+            "address_zip": null,
+            "address_zip_check": null,
+            "brand": "Visa",
+            "country": "US",
+            "cvc_check": "unchecked",
+            "dynamic_last4": null,
+            "exp_month": 4,
+            "exp_year": 2018,
+            "fingerprint": "poY4tcWUJwOkPdQM",
+            "funding": "credit",
+            "last4": "4242",
+            "metadata": {},
+            "name": null,
+            "tokenization_method": null
+          },
+          "client_ip": "2.222.152.243",
+          "created": 1491930564,
+          "livemode": false,
+          "type": "card",
+          "used": false
+        }
+    http_version: 
+  recorded_at: Tue, 11 Apr 2017 17:09:26 GMT
+- request:
+    method: post
+    uri: https://api.stripe.com/v1/customers
+    body:
+      encoding: UTF-8
+      string: source=tok_1A7SUaJbg6qtaO0vxHf9n6n7&email=garfield.beer%40bashirianmaggio.info&plan=basic
+    headers:
+      User-Agent:
+      - Stripe/v1 RubyBindings/2.2.1
+      Authorization:
+      - Bearer sk_test_6BRNRq14487SJKowZrsKs2Gc
+      Content-Type:
+      - application/x-www-form-urlencoded
+      X-Stripe-Client-User-Agent:
+      - '{"bindings_version":"2.2.1","lang":"ruby","lang_version":"2.2.6 p396 (2016-11-15)","platform":"i386-mingw32","engine":"ruby","publisher":"stripe","uname":"Microsoft
+        Windows [Version 10.0.14393]","hostname":"DESKTOP-T5V5TDV"}'
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Tue, 11 Apr 2017 17:09:27 GMT
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '3311'
+      Connection:
+      - keep-alive
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Methods:
+      - GET, POST, HEAD, OPTIONS, DELETE
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Max-Age:
+      - '300'
+      Cache-Control:
+      - no-cache, no-store
+      Request-Id:
+      - req_ASNFle5Z78NiGt
+      Stripe-Version:
+      - '2017-04-06'
+      Strict-Transport-Security:
+      - max-age=31556926; includeSubDomains
+    body:
+      encoding: UTF-8
+      string: |
+        {
+          "id": "cus_ASNFvp5cXN8KYS",
           "object": "customer",
           "account_balance": 0,
-          "created": 1491931879,
+          "created": 1491930565,
           "currency": "gbp",
-          "default_source": "card_1A7SpmJbg6qtaO0vqOPKGe82",
+          "default_source": "card_1A7SUaJbg6qtaO0vJAlaDVJb",
           "delinquent": false,
           "description": null,
           "discount": null,
-          "email": "test@example.com",
+          "email": "garfield.beer@bashirianmaggio.info",
           "livemode": false,
           "metadata": {},
           "shipping": null,
@@ -72,7 +161,7 @@ http_interactions:
             "object": "list",
             "data": [
               {
-                "id": "card_1A7SpmJbg6qtaO0vqOPKGe82",
+                "id": "card_1A7SUaJbg6qtaO0vJAlaDVJb",
                 "object": "card",
                 "address_city": null,
                 "address_country": null,
@@ -80,15 +169,15 @@ http_interactions:
                 "address_line1_check": null,
                 "address_line2": null,
                 "address_state": null,
-                "address_zip": "90210",
-                "address_zip_check": "pass",
+                "address_zip": null,
+                "address_zip_check": null,
                 "brand": "Visa",
                 "country": "US",
-                "customer": "cus_ASNaCxXCQxXsVh",
+                "customer": "cus_ASNFvp5cXN8KYS",
                 "cvc_check": "pass",
                 "dynamic_last4": null,
-                "exp_month": 10,
-                "exp_year": 2019,
+                "exp_month": 4,
+                "exp_year": 2018,
                 "fingerprint": "poY4tcWUJwOkPdQM",
                 "funding": "credit",
                 "last4": "4242",
@@ -99,30 +188,30 @@ http_interactions:
             ],
             "has_more": false,
             "total_count": 1,
-            "url": "/v1/customers/cus_ASNaCxXCQxXsVh/sources"
+            "url": "/v1/customers/cus_ASNFvp5cXN8KYS/sources"
           },
           "subscriptions": {
             "object": "list",
             "data": [
               {
-                "id": "sub_ASNaBbxEosp1xg",
+                "id": "sub_ASNFeC8q0i8Yy4",
                 "object": "subscription",
                 "application_fee_percent": null,
                 "cancel_at_period_end": false,
                 "canceled_at": null,
-                "created": 1491931879,
-                "current_period_end": 1494523879,
-                "current_period_start": 1491931879,
-                "customer": "cus_ASNaCxXCQxXsVh",
+                "created": 1491930565,
+                "current_period_end": 1494522565,
+                "current_period_start": 1491930565,
+                "customer": "cus_ASNFvp5cXN8KYS",
                 "discount": null,
                 "ended_at": null,
                 "items": {
                   "object": "list",
                   "data": [
                     {
-                      "id": "si_1A7SpnJbg6qtaO0vnvpdGyFv",
+                      "id": "si_1A7SUbJbg6qtaO0vJjRby8K1",
                       "object": "subscription_item",
-                      "created": 1491931880,
+                      "created": 1491930566,
                       "plan": {
                         "id": "basic",
                         "object": "plan",
@@ -142,7 +231,7 @@ http_interactions:
                   ],
                   "has_more": false,
                   "total_count": 1,
-                  "url": "/v1/subscription_items?subscription=sub_ASNaBbxEosp1xg"
+                  "url": "/v1/subscription_items?subscription=sub_ASNFeC8q0i8Yy4"
                 },
                 "livemode": false,
                 "metadata": {},
@@ -161,7 +250,7 @@ http_interactions:
                   "trial_period_days": null
                 },
                 "quantity": 1,
-                "start": 1491931879,
+                "start": 1491930565,
                 "status": "active",
                 "tax_percent": null,
                 "trial_end": null,
@@ -170,9 +259,9 @@ http_interactions:
             ],
             "has_more": false,
             "total_count": 1,
-            "url": "/v1/customers/cus_ASNaCxXCQxXsVh/subscriptions"
+            "url": "/v1/customers/cus_ASNFvp5cXN8KYS/subscriptions"
           }
         }
     http_version: 
-  recorded_at: Tue, 11 Apr 2017 17:31:23 GMT
+  recorded_at: Tue, 11 Apr 2017 17:09:30 GMT
 recorded_with: VCR 3.0.3

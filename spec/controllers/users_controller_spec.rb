@@ -29,108 +29,45 @@ describe UsersController do
   end
 
   describe "POST create" do
-    context "with valid input and accepted card" do
-      let(:charge) { double(:charge, successful?: true)}
+    context "with successful user signup" do
+      let(:result) { double(:result, successful?: true)}
 
       before do
-        expect(StripeWrapper::Charge).to receive(:create).and_return(charge)
+        expect_any_instance_of(UserSignup).to receive(:sign_up).and_return(result)
         post :create, user: { username: "Name", password: "password",
-          email: "test@email.com" }
+          email: "test@email.com"}, stripeToken: "12345"
       end
 
-      it "should create the user" do
-        expect(User.count).to eq(1)
-      end
-
-      it "should redirect to login page" do
+      it "should redirect to login page", :vcr do
         expect(response).to redirect_to login_path
       end
 
-      it "should show a message in the flash" do
+      it "should show a message in the flash", :vcr do
         expect(flash).to be_present
-      end
-
-      it "sends out email to user" do
-        expect(ActionMailer::Base.deliveries.last.to).to eq(["test@email.com"])
-      end
-
-      it "sends out email containing user's name" do
-        expect(ActionMailer::Base.deliveries.last.body).to include("Name")
       end
     end
 
-    context "with valid input and declined card" do
+    context "with unsuccessful signup" do
+      let(:result) { double(:result, successful?: false, error_message: "Some message")}
+
       before do
-        charge = double(:charge, successful?: false, error_message: "Your card was declined.")
-        expect(StripeWrapper::Charge).to receive(:create).and_return(charge)
+        expect_any_instance_of(UserSignup).to receive(:sign_up).and_return(result)
         post :create, user: { username: "Name", password: "password",
-          email: "test@email.com" }
+          email: "test@email.com"}, stripeToken: "12345"
       end
 
-      it "does not create a new user record" do
-        expect(User.count).to eq(0)
+      it "should assign user variable" do
+        expect(assigns(:user)).to be_an_instance_of(User  )
       end
 
-      it "renders the new template" do
+      it "renders the new template", :vcr do
         expect(response).to render_template :new
       end
 
-      it "sets the flash error message" do
+      it "sets the flash error message", :vcr do
         expect(flash[:danger]).to be_present
       end
     end
 
-    context "with valid input following invite" do
-      let(:user) { Fabricate(:user) }
-      let(:charge) { double(:charge, successful?: true)}
-
-      before do
-        expect(StripeWrapper::Charge).to receive(:create).and_return(charge)
-        invitation = Fabricate(:invitation, friend_email: "test@email.com",
-        inviter: user)
-        post :create, user: { username: "Name", password: "password",
-          email: "test@email.com"}, token: invitation.token
-      end
-
-      it "should set new user to follow inviter" do
-        expect(user.following_relationships.first.leader).to eq(User.last)
-      end
-
-      it "should set inviter to follow new user" do
-        expect(User.last.following_relationships.first.leader).to eq(user)
-      end
-
-    end
-
-
-    context "with invalid input" do
-      before do
-        ActionMailer::Base.deliveries.clear
-        post :create, user: { username: "Name", password: "invalid",
-          email: "test@email.com" }
-      end
-
-      it "should render the new template" do
-        expect(response).to render_template(:new)
-      end
-
-      it "should assign the @user variable" do
-        expect(assigns(:user)).to be_instance_of(User)
-      end
-
-      it "should not create a user" do
-        expect(User.count).to eq(0)
-      end
-
-      it "does not send out email" do
-        expect(ActionMailer::Base.deliveries).to be_empty
-      end
-
-      it "does not charge the card" do
-        expect(StripeWrapper::Charge).not_to receive(:create)
-        post :create, user: { email: "email@email.com"}
-      end
-
-    end
   end
 end
