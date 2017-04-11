@@ -1,7 +1,7 @@
 %section.register.container
   .row
     .col-sm-10.col-sm-offset-1
-      = bootstrap_form_for(@user, layout: :horizontal, html: {id: "payment-form"}, class: 'form-horizontal') do |f| 
+      = bootstrap_form_for(@user, layout: :horizontal, html: {id: "payment-form"}, class: 'form-horizontal') do |f|
         %header
           %h1 Register
         %fieldset
@@ -13,18 +13,18 @@
               = f.email_field :email, control_class: 'form-control', label_class: 'control-label col-sm-2'
             .form-group
               = f.password_field :password, control_class: 'form-control', label_class: 'control-label col-sm-2'
-        %fieldset 
-          .form-row 
+        %fieldset
+          .form-row
             %label(for="card-element")
             #card-element
             #card-errors
-        = f.submit "Register", class: "btn btn-default" 
-        
+        = f.submit "Register", class: "btn btn-default"
+
 %script(src="https://js.stripe.com/v3/")
 %script
   var style = {base: {fontSize: '16px',lineHeight: '24px'}};
   var stripe = Stripe("#{ENV['STRIPE_PUBLISHABLE_KEY']}");
-  var elements = stripe.elements(); 
+  var elements = stripe.elements();
   var card = elements.create('card', {style: style});
   card.mount('#card-element');
 

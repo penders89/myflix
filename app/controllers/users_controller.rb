@@ -16,21 +16,29 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
     invitation = Invitation.find_by(token: params[:token])
 
-    if @user.save
-      if invitation
-        Relationship.create(leader: invitation.inviter, follower: @user)
-        Relationship.create(leader: @user, follower: invitation.inviter)
+    if @user.valid?
+      token = params[:stripeToken]
+      charge = StripeWrapper::Charge.create(
+        :amount => 999,
+        :description => "Example charge",
+        :source => token,
+      )
+
+      if charge.successful?
+        @user.save
+
+        if invitation
+          Relationship.create(leader: invitation.inviter, follower: @user)
+          Relationship.create(leader: @user, follower: invitation.inviter)
+        end
+
+        flash[:success] = "User has been created!"
+        AppMailer.send_welcome_email(@user).deliver
+        redirect_to login_path
+      else
+        flash[:danger] = charge.error_message
+        render :new
       end
-        # Stripe.api_key = ENV['STRIPE_SECRET_KEY']
-        # token = params[:stripeToken]
-        # StripeWrapper::Charge.create(
-        #   :amount => 999,
-        #   :description => "Example charge",
-        #   :source => token,
-        # )
-      flash[:success] = "User has been created!"
-      # AppMailer.delay.send_welcome_email(@user)
-      redirect_to login_path
     else
       render :new
     end
