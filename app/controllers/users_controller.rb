@@ -21,19 +21,15 @@ class UsersController < ApplicationController
         Relationship.create(leader: invitation.inviter, follower: @user)
         Relationship.create(leader: @user, follower: invitation.inviter)
       end
-<<<<<<< HEAD
-      
-=======
->>>>>>> 43e93c76906f8992f0f1f0e8e032c49101fb2cd1
-      Stripe.api_key = ENV['STRIPE_SECRET_KEY']
-      token = params[:stripeToken]
-      StripeWrapper::Charge.create(
-        :amount => 999,
-        :description => "Example charge",
-        :source => token,
-      )
+        # Stripe.api_key = ENV['STRIPE_SECRET_KEY']
+        # token = params[:stripeToken]
+        # StripeWrapper::Charge.create(
+        #   :amount => 999,
+        #   :description => "Example charge",
+        #   :source => token,
+        # )
       flash[:success] = "User has been created!"
-      AppMailer.delay.send_welcome_email(@user)
+      # AppMailer.delay.send_welcome_email(@user)
       redirect_to login_path
     else
       render :new

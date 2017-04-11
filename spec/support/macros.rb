@@ -1,14 +1,14 @@
-def set_current_user 
+def set_current_user
   user = Fabricate(:user)
   session[:user_id] = user.id
 end
-  
+
 def set_current_admin
   session[:user_id] = Fabricate(:admin).id
 end
-  
-  
-def current_user 
+
+
+def current_user
   User.find(session[:user_id])
 end
 
@@ -19,8 +19,8 @@ end
 def sign_in(a_user=nil)
   user = a_user || Fabricate(:user)
   visit login_path
-  fill_in "Email", with: user.email
-  fill_in "Password", with: user.password
+  fill_in "Email", with: a_user.email
+  fill_in "Password", with: a_user.password
   click_button "Sign in"
 end
 
@@ -30,5 +30,6 @@ end
 
 def sign_out
   visit home_path
+  find('a', text: /Welcome/).click
   click_link "Sign Out"
 end
