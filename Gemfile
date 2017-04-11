@@ -12,7 +12,6 @@ gem 'pg'
 gem 'bcrypt'
 gem 'bootstrap_form'
 gem 'sidekiq'
-# gem 'unicorn'
 gem 'carrierwave'
 gem 'mini_magick'
 gem 'fog'
@@ -24,6 +23,7 @@ group :development do
   gem 'thin'
   gem "better_errors"
   gem "binding_of_caller"
+  gem 'letter_opener'
 end
 
 group :development, :test do
@@ -47,5 +47,6 @@ group :test do
 end
 
 group :production do
+  gem 'unicorn'
   gem 'rails_12factor'
 end

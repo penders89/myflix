@@ -15,7 +15,7 @@ feature "User invitations" do
 
     open_email("test@example.com")
     current_email.click_link "Sign up for an account"
-    sleep 5
+    sleep 2
     expect(page).to have_selector "input[value='test@example.com']"
 
     fill_in "Username", with: "Test username"
@@ -27,14 +27,15 @@ feature "User invitations" do
       find("input[name='cvc']").set("123")
       find("input[name='postal']").set("90210")
     end
-    click_button "Register"
 
-    sleep 5
+    click_button "Register"
+byebug
+    sleep 2
     visit login_path
     fill_in "Email", with: "test@example.com"
     fill_in "Password", with: "Password"
     click_button "Sign in"
-    sleep 5
+    sleep 2
 
     click_link "People"
     expect(page).to have_content "Test username"
